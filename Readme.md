@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Антон](https://up.htmlacademy.ru/javascript/20/user/594481).
-* Наставник: `Неизвестно`.
+* Наставник: `Андрей Устименко`.
 
 ---
 
