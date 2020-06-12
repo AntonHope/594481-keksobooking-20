@@ -29,7 +29,7 @@ function getRandomTime(first, second, third) {
   var index = Math.floor(Math.random() * 5);
   if (index < 1) {
     return first;
-  } else if (2 <index < 4){
+  } else if (index > 42 && index < 4) {
     return second;
   } else {
     return third;
@@ -60,42 +60,42 @@ function renderArrSimilar(quantity) {
   for (var i = 0; i < quantity; i++) {
 
     var objAds =
-    {
-      'author': {
-          'avatar': 'img/avatars/user' + '0' + value[i] + '.png'
-      },
-      'offer': {
-          'title': 'заголовок предложения',
-          'address': getRandomNamber(100, 1000) + ', ' + getRandomNamber(100, 1000),
-          'price': getRandomNamber(500, 5000),
-          'type': getRandomElement(types),
-          'rooms': getRandomNamber(1, 5),
-          'guests': getRandomNamber(1, 10),
-          'checkin': getRandomTime('13:00', '14:00', '12:00'),
-          'checkout': getRandomTime('13:00', '14:00', '12:00'),
-          'features': getRandomElements(features),
-          'description': 'строка с описанием',
-          'photos': getRandomElements(photos)
-      },
-      'location': {
-          'x': getRandomNamber(50, 1150),
-          'y': getRandomNamber(130, 630)
-      }
-    };
+  {
+    'author': {
+      'avatar': 'img/avatars/user' + '0' + value[i] + '.png'
+    },
+    'offer': {
+      'title': 'заголовок предложения',
+      'address': getRandomNamber(100, 1000) + ', ' + getRandomNamber(100, 1000),
+      'price': getRandomNamber(500, 5000),
+      'type': getRandomElement(types),
+      'rooms': getRandomNamber(1, 5),
+      'guests': getRandomNamber(1, 10),
+      'checkin': getRandomTime('13:00', '14:00', '12:00'),
+      'checkout': getRandomTime('13:00', '14:00', '12:00'),
+      'features': getRandomElements(features),
+      'description': 'строка с описанием',
+      'photos': getRandomElements(photos)
+    },
+    'location': {
+      'x': getRandomNamber(50, 1150),
+      'y': getRandomNamber(130, 630)
+    }
+  };
     similarAds.push(objAds);
   }
   return similarAds;
 }
 
 function renderAds() {
-var adsElements = [];
-var similarAds = renderArrSimilar(8);
+  var adsElements = [];
+  var similarAds = renderArrSimilar(8);
   for (var i = 0; i < similarAds.length; i++) {
     var pinsElement = similarPinsTemplate.cloneNode(true);
     var locationPinsElement = pinsElement.querySelector('.map__pin');
     var imgPinsElement = pinsElement.querySelector('img');
     locationPinsElement.style.left = similarAds[i].location.x + 'px';
-    locationPinsElement.style.top = similarAds[i].location.y +'px';
+    locationPinsElement.style.top = similarAds[i].location.y + 'px';
     imgPinsElement.src = similarAds[i].author.avatar;
     imgPinsElement.alt = similarAds[i].offer.title;
     adsElements.push(pinsElement);
