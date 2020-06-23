@@ -25,7 +25,7 @@ var LOCATION_Y_MIN = 630;
 var ADRESS_MIN = 100;
 var ADRESS_MAX = 1000;
 
-function getRandomElements(arr) {
+function getRandomListValues(arr) {
   var index = Math.floor(Math.random() * arr.length);
   var targetArr = [];
 
@@ -36,7 +36,7 @@ function getRandomElements(arr) {
   return targetArr;
 }
 
-function getRandomElement(arr) {
+function getRandomListValue(arr) {
   var index = Math.floor(Math.random() * arr.length);
 
   return arr[index];
@@ -46,40 +46,36 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function mockAds(i) {
-  var ads =
-  {
+function createAd(i) {
+  return {
     'author': {
       'avatar': photoUrl[i]
     },
     'offer': {
-      'title': getRandomElement(title),
+      'title': getRandomListValue(title),
       'address': getRandomNumber(ADRESS_MIN, ADRESS_MAX) + ', ' + getRandomNumber(ADRESS_MIN, ADRESS_MAX),
       'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
-      'type': getRandomElement(types),
+      'type': getRandomListValue(types),
       'rooms': getRandomNumber(MIN_ROOMS, MAX_ROOMS),
       'guests': getRandomNumber(MIN_GUESTS, MAX_GUESTS),
-      'CHECK': getRandomElement(checkTime),
-      'checkout': getRandomElement(checkTime),
-      'features': getRandomElements(features),
-      'description': getRandomElement(descriptionAds),
-      'photos': getRandomElements(photos)
+      'CHECK': getRandomListValue(checkTime),
+      'checkout': getRandomListValue(checkTime),
+      'features': getRandomListValues(features),
+      'description': getRandomListValue(descriptionAds),
+      'photos': getRandomListValues(photos)
     },
     'location': {
       'x': getRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
       'y': getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX)
     }
   };
-
-  return ads;
 }
 
 function createSimilarAds(amount) {
   var similarAdsNew = [];
 
   for (var i = 0; i < amount; i++) {
-    var newAds = mockAds(i);
-    similarAdsNew.push(newAds);
+    similarAdsNew.push(createAd(i));
   }
 
   return similarAdsNew;
@@ -87,7 +83,7 @@ function createSimilarAds(amount) {
 
 var similarAds = createSimilarAds(8);
 
-function createElement(element) {
+function createPinElement(element) {
   var pinsElement = similarPinsTemplate.cloneNode(true);
   var locationPinsElement = pinsElement.querySelector('.map__pin');
   var imgPinsElement = pinsElement.querySelector('img');
@@ -100,19 +96,19 @@ function createElement(element) {
   return pinsElement;
 }
 
-function createAds() {
+function createAds(similarAds) {
   var adsElements = [];
 
   for (var i = 0; i < similarAds.length; i++) {
-    adsElements.push(createElement(similarAds[i]));
+    adsElements.push(createPinElement(similarAds[i]));
   }
 
   return adsElements;
 }
 
-var adsElementsList = createAds();
+var adsElementsList = createAds(similarAds);
 
-function renderSimilarAds() {
+function renderSimilarAds(adsElementsList) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < adsElementsList.length; i++) {
@@ -122,4 +118,4 @@ function renderSimilarAds() {
   return similarPinsList.append(fragment);
 }
 
-renderSimilarAds();
+renderSimilarAds(adsElementsList);
