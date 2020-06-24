@@ -96,11 +96,11 @@ function createPinElement(element) {
   return pinsElement;
 }
 
-function createAds(similarAds) {
+function createAds(similarAdsList) {
   var adsElements = [];
 
-  for (var i = 0; i < similarAds.length; i++) {
-    adsElements.push(createPinElement(similarAds[i]));
+  for (var i = 0; i < similarAdsList.length; i++) {
+    adsElements.push(createPinElement(similarAdsList[i]));
   }
 
   return adsElements;
@@ -108,11 +108,11 @@ function createAds(similarAds) {
 
 var adsElementsList = createAds(similarAds);
 
-function renderSimilarAds(adsElementsList) {
+function renderSimilarAds(elementsList) {
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < adsElementsList.length; i++) {
-    fragment.append(adsElementsList[i]);
+  for (var i = 0; i < elementsList.length; i++) {
+    fragment.append(elementsList[i]);
   }
 
   return similarPinsList.append(fragment);
