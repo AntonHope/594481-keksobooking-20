@@ -169,21 +169,22 @@ function createCardElement(element) {
     }
   }
 
-  var cardFeaturesElements = cardElement.querySelectorAll('.popup__feature');
   var featuresList = element.offer.features;
+  var cardFeaturesElements = cardElement.querySelectorAll('.popup__feature');
 
-  for (var i = 0; i < featuresList.length; i++) {
+  for (var j = 0; j < featuresList.length; j++) {
     var partOfElement = 'popup__feature--';
 
-    for (var element of cardFeaturesElements) {
-      if (element.classList.contains(partOfElement + featuresList[i])) {
-        element.textContent = featuresList[i];
+    for (var l = 0; l < cardFeaturesElements.length; l++) {
+      if (cardFeaturesElements[l].classList.contains(partOfElement + featuresList[j])) {
+        cardFeaturesElements[l].textContent = featuresList[j];
       }
     }
   }
-  for (var element of cardFeaturesElements) {
-    if (element.textContent === '') {
-      element.remove();
+
+  for (var k = 0; k < cardFeaturesElements.length; k++) {
+    if (cardFeaturesElements[k].textContent === '') {
+      cardFeaturesElements[k].remove();
     }
   }
 
@@ -192,10 +193,10 @@ function createCardElement(element) {
 
 var card = createCardElement(similarAds[0]);
 
-function renderCards(elementsList) {
+function renderCards(cardElement) {
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-  return map.append(card, mapFiltersContainer);
+  return map.append(cardElement, mapFiltersContainer);
 }
 
 renderCards(card);
