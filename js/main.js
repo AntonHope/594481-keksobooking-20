@@ -46,11 +46,11 @@ addDisabled();
 
 // активация страницы
 
-function cancelFadedState(fieldList) {
+function enableForm(fieldList) {
   map.classList.remove('map--faded');
 
   for (var i = 0; i < fieldList.length; i++) {
-    fieldList[i].removeAttribute('disabled', 'disabled');
+    fieldList[i].removeAttribute('disabled');
   }
 
   adForm.classList.remove('ad-form--disabled');
@@ -65,93 +65,102 @@ function renderAdressSmallPin() {
   adressInput.value = Math.round(coordinatesPin.left + MAIN_SMALL_PIN_WIDTH / 2) + ', ' + Math.round(coordinatesPin.top + MAIN_SMALL_PIN_HEIGHT);
 }
 
-mapPinMain.addEventListener('mousedown', function (evt) {
+function onMainPinClick(evt) {
   if (evt.which === 1) {
-    cancelFadedState(mapFieldsets);
+    enableForm(mapFieldsets);
     renderAdressSmallPin();
   }
-});
-
-mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
-    cancelFadedState(mapFieldsets);
+    enableForm(mapFieldsets);
     renderAdressSmallPin();
   }
-});
+}
+
+mapPinMain.addEventListener('mousedown', onMainPinClick);
+
+mapPinMain.addEventListener('keydown', onMainPinClick);
 
 // Ваидация формы
 
 var selectTypeRooms = adForm.querySelector('#type');
 var pricePerNight = adForm.querySelector('#price');
 
-function validateTypeRooms() {
-  if (selectTypeRooms.value === 'bungalo') {
-    pricePerNight.setAttribute('min', '0');
-    pricePerNight.placeholder = 'От ' + 0;
-  } else if (selectTypeRooms.value === 'flat') {
-    pricePerNight.setAttribute('min', '1000');
-    pricePerNight.placeholder = 'От ' + 1000;
-  } else if (selectTypeRooms.value === 'house') {
-    pricePerNight.setAttribute('min', '5000');
-    pricePerNight.placeholder = 'От ' + 5000;
-  } else if (selectTypeRooms.value === 'palace') {
-    pricePerNight.setAttribute('min', '10000');
-    pricePerNight.placeholder = 'От ' + 10000;
+function onPriceChange() {
+  switch (selectTypeRooms.value) {
+
+    case 'bungalo':
+      pricePerNight.setAttribute('min', '0');
+      break;
+
+    case 'flat':
+      pricePerNight.setAttribute('min', '1000');
+      break;
+
+    case 'house':
+      pricePerNight.setAttribute('min', '5000');
+      break;
+
+    case 'palace':
+      pricePerNight.setAttribute('min', '10000');
+      break;
   }
 }
 
-selectTypeRooms.addEventListener('change', function () {
-  validateTypeRooms();
-});
+selectTypeRooms.addEventListener('change', onPriceChange);
 
 var timeIn = adForm.querySelector('#timein');
 var timeOut = adForm.querySelector('#timeout');
 
-function validateTime(timeFirst, timeSecond) {
-  if (timeFirst.value === '12:00') {
-    timeSecond.value = timeSecond.options[0].value;
-  } else if (timeFirst.value === '13:00') {
-    timeSecond.value = timeSecond.options[1].value;
-  } else if (timeFirst.value === '14:00') {
-    timeSecond.value = timeSecond.options[2].value;
-  }
+function onTimeOutChange() {
+  timeIn.value = timeOut.value;
 }
 
-timeIn.addEventListener('change', function () {
-  validateTime(timeIn, timeOut);
-});
+function onTimeInChange() {
+  timeOut.value = timeIn.value;
+}
 
-timeOut.addEventListener('change', function () {
-  validateTime(timeOut, timeIn);
-});
+timeIn.addEventListener('change', onTimeInChange);
 
-var roomNamber = adForm.querySelector('#room_number');
+timeOut.addEventListener('change', onTimeOutChange);
+
+var roomNumber = adForm.querySelector('#room_number');
 var capacity = adForm.querySelector('#capacity');
 
-function validateCapacity() {
+function addAtrDisabled(elem) {
+  elem.setAttribute('disabled', 'disabled');
+}
+
+function onCapacityChange() {
   for (var i = 0; i < capacity.options.length; i++) {
     capacity.options[i].removeAttribute('disabled');
   }
+  switch (roomNumber.value) {
+    case '1':
+      addAtrDisabled(capacity.options[0]);
+      addAtrDisabled(capacity.options[1]);
+      addAtrDisabled(capacity.options[3]);
+      break;
 
-  if (roomNamber.value === '1') {
-    capacity.options[0].setAttribute('disabled', 'disabled');
-    capacity.options[1].setAttribute('disabled', 'disabled');
-    capacity.options[3].setAttribute('disabled', 'disabled');
-  } else if (roomNamber.value === '2') {
-    capacity.options[0].setAttribute('disabled', 'disabled');
-    capacity.options[3].setAttribute('disabled', 'disabled');
-  } else if (roomNamber.value === '3') {
-    capacity.options[3].setAttribute('disabled', 'disabled');
-  } else if (roomNamber.value === '100') {
-    capacity.options[0].setAttribute('disabled', 'disabled');
-    capacity.options[1].setAttribute('disabled', 'disabled');
-    capacity.options[2].setAttribute('disabled', 'disabled');
+    case '2':
+      addAtrDisabled(capacity.options[0]);
+      addAtrDisabled(capacity.options[3]);
+      break;
+
+    case '3':
+      addAtrDisabled(capacity.options[3]);
+      break;
+
+    case '100':
+      addAtrDisabled(capacity.options[0]);
+      addAtrDisabled(capacity.options[1]);
+      addAtrDisabled(capacity.options[2]);
+      break;
   }
 }
 
-roomNamber.addEventListener('change', function () {
-  validateCapacity();
-});
+onCapacityChange();
+
+roomNumber.addEventListener('change', onCapacityChange);
 
 
 function getRandomListValues(arr) {
